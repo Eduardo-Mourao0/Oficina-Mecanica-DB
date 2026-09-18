@@ -1,96 +1,102 @@
 -- ============================================================
--- Povoamento inicial com dados fictícios para testes
+-- Povoamento inicial com dados ficticios para testes
 -- ============================================================
 
 USE oficina_mecanica;
 
 -- ============================================================
--- CLIENTES
+-- CLIENTES E ESPECIALIZACOES
 -- ============================================================
-INSERT INTO CLIENTE (nome, cpf_cnpj, telefone, endereco) VALUES
-('Carlos Eduardo Silva', '123.456.789-00', '(61) 98888-1111', 'Asa Norte CLN 204, Brasília - DF'),
-('Mariana Souza Lima', '987.654.321-11', '(61) 99999-2222', 'Águas Claras Av. Castanheiras, Brasília - DF'),
-('Auto Peças & Transportes LTDA', '12.345.678/0001-99', '(61) 3333-4444', 'SIA Trecho 3, Brasília - DF');
+INSERT INTO CLIENTE (nome, telefone, email, endereco, tipo_cliente) VALUES
+('Carlos Eduardo Silva', '(61) 98888-1111', 'carlos@email.com', 'Asa Norte CLN 204, Brasilia - DF', 'Pessoa Fisica'),
+('Mariana Souza Lima', '(61) 99999-2222', 'mariana@email.com', 'Aguas Claras, Brasilia - DF', 'Pessoa Fisica'),
+('Auto Pecas e Transportes LTDA', '(61) 3333-4444', 'contato@autopecas.com', 'SIA Trecho 3, Brasilia - DF', 'Pessoa Juridica');
+
+INSERT INTO PESSOA_FISICA (id_cliente, cpf, rg, data_nasc) VALUES
+(1, '123.456.789-00', '1234567-SSP/DF', '1985-05-12'),
+(2, '987.654.321-11', '7654321-SSP/DF', '1990-10-24');
+
+INSERT INTO PESSOA_JURIDICA (id_cliente, cnpj, razao_social, inscricao_estadual) VALUES
+(3, '12.345.678/0001-99', 'Auto Pecas e Transportes LTDA', '07345678001-20');
 
 -- ============================================================
--- VEÍCULOS
+-- VEICULOS
 -- ============================================================
-INSERT INTO VEICULO (placa, modelo, marca, ano, id_cliente) VALUES
-('ABC1D23', 'Civic 2.0', 'Honda', 2020, 1),
-('XYZ9K88', 'Onix 1.0 Turbo', 'Chevrolet', 2022, 2),
-('JHK4M55', 'Corolla 2.0', 'Toyota', 2019, 3);
+INSERT INTO VEICULO (placa, modelo, marca, ano_fabricacao, cor, id_cliente) VALUES
+('ABC1D23', 'Civic 2.0', 'Honda', 2020, 'Prata', 1),
+('XYZ9K88', 'Onix 1.0 Turbo', 'Chevrolet', 2022, 'Branco', 2),
+('JHK4M55', 'Corolla 2.0', 'Toyota', 2019, 'Preto', 3);
 
 -- ============================================================
--- MECÂNICOS
+-- FORNECEDORES E PECAS
 -- ============================================================
-INSERT INTO MECANICO (nome, cpf, especialidade) VALUES
-('Roberto Alves', '111.222.333-44', 'Motor e Injeção Eletrônica'),
-('Fernando Costa', '555.666.777-88', 'Suspensão e Freios');
+INSERT INTO FORNECEDOR (cnpj, nome_fantasia, telefone, email) VALUES
+('11.222.333/0001-44', 'Distribuidora Brasil', '(61) 3222-1000', 'vendas@distribuidorabrasil.com'),
+('55.666.777/0001-88', 'Pecas Express', '(61) 3333-2000', 'contato@pecasexpress.com');
+
+INSERT INTO PECA (codigo_barras, descricao, preco_unitario, quantidade_estoque, id_fornecedor) VALUES
+('7891000000011', 'Oleo Sintetico 5W30 (Litro)', 45.00, 50, 1),
+('7891000000028', 'Filtro de Oleo', 35.00, 30, 1),
+('7891000000035', 'Jogo de Pastilhas de Freio Dianteira', 180.00, 15, 2);
 
 -- ============================================================
--- CATÁLOGO DE SERVIÇOS
+-- MECANICOS
 -- ============================================================
-INSERT INTO SERVICO (descricao, valor_tabela, tempo_estimado) VALUES
-('Troca de Óleo e Filtro', 150.00, 45),
-('Alinhamento e Balanceamento', 120.00, 60),
-('Revisão do Sistema de Freios', 250.00, 90);
+INSERT INTO MECANICO (nome, cpf, especialidade, valor_hora, id_supervisor) VALUES
+('Roberto Alves', '111.222.333-44', 'Motor e Injecao Eletronica', 95.00, NULL),
+('Fernando Costa', '555.666.777-88', 'Suspensao e Freios', 85.00, 1);
 
 -- ============================================================
--- CATÁLOGO DE PEÇAS
+-- CATALOGO DE SERVICOS
 -- ============================================================
-INSERT INTO PECA (descricao, valor_tabela, qtd_estoque) VALUES
-('Óleo Sintético 5W30 (Litro)', 45.00, 50),
-('Filtro de Óleo', 35.00, 30),
-('Jogo de Pastilhas de Freio Dianteira', 180.00, 15);
+INSERT INTO SERVICO (descricao, valor_tabela_padrao, tempo_estimado_horas) VALUES
+('Troca de Oleo e Filtro', 150.00, 1),
+('Alinhamento e Balanceamento', 120.00, 1),
+('Revisao do Sistema de Freios', 250.00, 2);
 
 -- ============================================================
--- ORDENS DE SERVIÇO
--- Os valores totais foram ajustados para corresponder à soma
--- dos serviços e das peças cadastradas em cada OS.
+-- ORDENS DE SERVICO
 -- ============================================================
 INSERT INTO ORDEM_SERVICO (
     data_abertura,
     data_previsao,
-    data_encerramento,
+    data_conclusao,
     status,
     valor_total,
-    forma_pagamento,
-    placa_veiculo,
+    id_veiculo,
     id_mecanico
 ) VALUES
-(
-    '2026-03-01 08:30:00',
-    '2026-03-01 12:00:00',
-    '2026-03-01 11:45:00',
-    'Concluído',
-    395.00,
-    'PIX',
-    'ABC1D23',
-    1
-),
-(
-    '2026-03-02 10:00:00',
-    '2026-03-02 17:00:00',
-    NULL,
-    'Em Execução',
-    430.00,
-    NULL,
-    'XYZ9K88',
-    2
-);
+('2026-03-01 08:30:00', '2026-03-01 12:00:00', '2026-03-01 11:45:00', 'Concluido', 350.00, 1, 1),
+('2026-03-02 10:00:00', '2026-03-02 17:00:00', NULL, 'Em Execucao', 430.00, 2, 2);
 
 -- ============================================================
--- ITENS DE SERVIÇOS DAS ORDENS DE SERVIÇO
+-- RELACOES CONTEM E UTILIZA
 -- ============================================================
-INSERT INTO ITEM_SERVICO (id_os, id_servico, valor_cobrado) VALUES
-(1, 1, 150.00),
-(1, 2, 120.00),
-(2, 3, 250.00);
+INSERT INTO ITEM_SERVICO (id_os, id_servico) VALUES
+(1, 1),
+(1, 2),
+(2, 3);
+
+INSERT INTO ITEM_PECA (id_os, id_peca) VALUES
+(1, 1),
+(1, 2),
+(2, 3);
 
 -- ============================================================
--- ITENS DE PEÇAS DAS ORDENS DE SERVIÇO
+-- GARANTIAS E HISTORICO DE STATUS
 -- ============================================================
-INSERT INTO ITEM_PECA (id_os, id_peca, quantidade, valor_cobrado) VALUES
-(1, 1, 2, 45.00),
-(1, 2, 1, 35.00),
-(2, 3, 1, 180.00);
+INSERT INTO GARANTIA (data_inicio, data_fim, termos, id_os) VALUES
+('2026-03-01', '2026-06-01', 'Garantia de 90 dias para servicos e pecas aplicadas.', 1);
+
+INSERT INTO HISTORICO_STATUS_OS (
+    id_os,
+    id_historico,
+    data_mudanca,
+    status_anterior,
+    status_novo,
+    observacao
+) VALUES
+(1, 1, '2026-03-01 08:30:00', NULL, 'Orcamento', 'Ordem de servico aberta.'),
+(1, 2, '2026-03-01 09:00:00', 'Orcamento', 'Aprovado', 'Orcamento aprovado pelo cliente.'),
+(1, 3, '2026-03-01 11:45:00', 'Aprovado', 'Concluido', 'Servico finalizado.'),
+(2, 1, '2026-03-02 10:00:00', NULL, 'Em Execucao', 'Servico em andamento.');
