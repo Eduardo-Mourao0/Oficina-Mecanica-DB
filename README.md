@@ -6,7 +6,7 @@ O projeto implementa um banco de dados relacional para uma oficina mecânica, ab
 
 ## Modelo Conceitual
 
-O [modelo conceitual em PDF](docs/MER.pdf) define as entidades, atributos, relacionamentos e cardinalidades do banco de dados.
+O [modelo conceitual (PDF)](docs/MER.pdf?raw=1) define as entidades, atributos, relacionamentos e cardinalidades do banco de dados.
 
 ## Funcionalidades Modeladas
 
