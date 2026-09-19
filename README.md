@@ -6,9 +6,7 @@ O projeto implementa um banco de dados relacional para uma oficina mecânica, ab
 
 ## Modelo Conceitual
 
-![Modelo conceitual do banco de dados](imagens/Modelo-Conceitual.jpeg)
-
-O modelo conceitual completo também está disponível na imagem acima. Ele define as entidades, atributos, relacionamentos e cardinalidades do banco de dados.
+O [modelo conceitual em PDF](docs/MER.pdf) define as entidades, atributos, relacionamentos e cardinalidades do banco de dados.
 
 ## Funcionalidades Modeladas
 
@@ -33,9 +31,8 @@ O modelo conceitual completo também está disponível na imagem acima. Ele defi
 oficina-mecanica-db/
 |-- README.md
 |-- docs/
-|   `-- Projeto-Final1.pdf
-|-- imagens/
-|   `-- Modelo-Conceitual.jpeg
+|   |-- MER.pdf
+|   `-- Projeto-Final.pdf
 `-- sql/
     |-- 01_ddl.sql
     |-- 02_carga.sql
@@ -58,4 +55,4 @@ Abra cada arquivo da pasta `sql/` e execute-os na ordem indicada acima.
 
 ## Documentação
 
-O relatório do projeto está disponível em [docs/Projeto-Final1.pdf](docs/Projeto-Final1.pdf).
+O relatório do projeto está disponível em [docs/Projeto-Final.pdf](docs/Projeto-Final.pdf).
